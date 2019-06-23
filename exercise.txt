@@ -1,0 +1,3 @@
+Tomar como base el ejemplo de código.
+Compilarlo y hacerlo funcionar en el sistema operativo que ud use.
+Desacoplar el mensaje de la aplicación para que pueda cambiar compilando solo el responsable del mensaje.
