@@ -9,16 +9,20 @@
 #include <ComponentInterface.h>
 #include <ApplicationInterface.h>
 
+void* createComponent(std::string interfaceName) {
+    ComponentFactory* componentFactory = new ComponentFactory();
+    componentFactory -> setInterfaceName(interfaceName);
+    ComponentInterface* component = componentFactory -> 
+        createFrom("./" + interfaceName.substr(0, interfaceName.find("Interface")));
+    delete componentFactory;
+    return (component -> getInstance());
+}
+
 int main()
 {
-    ComponentFactory* componentFactoryObject = new ComponentFactory();
-    componentFactoryObject->setInterfaceName("ApplicationInterface");
-    ComponentInterface* applicationComponent = componentFactoryObject->createFrom("./Application");
-    delete componentFactoryObject;
-
-    ApplicationInterface* applicationObject = ( (ApplicationInterface*) applicationComponent->getInstance() );
-    applicationObject->run();
-    applicationComponent->release();
+    ApplicationInterface* applicationObject = ((ApplicationInterface*) createComponent("ApplicationInterface")); 
+    applicationObject -> run();
+    ((ComponentInterface*) applicationObject) -> release();
 
     return 0;
 }

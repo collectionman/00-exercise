@@ -26,9 +26,13 @@ class ConsoleGreeter : public GreeterInterface, public ComponentInterface
         bool implemented;
 };
 
-ConsoleGreeter::ConsoleGreeter() : referenceCounter(0){}
+ConsoleGreeter::ConsoleGreeter() : referenceCounter(0){
+    std::cout << "Greeter Created" << std::endl;
+}
 
-ConsoleGreeter::~ConsoleGreeter(){}
+ConsoleGreeter::~ConsoleGreeter(){
+    std::cout << "Greeter Deleted" << std::endl;
+}
 
 void ConsoleGreeter::greet(std::string message)
 {

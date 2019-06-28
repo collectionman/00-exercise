@@ -13,6 +13,15 @@
 #include <GreeterIterface.h>
 #include <MessengerInterface.h>
 
+void* createComponent(std::string interfaceName) {
+    ComponentFactory* componentFactory = new ComponentFactory();
+    componentFactory -> setInterfaceName(interfaceName);
+    ComponentInterface* component = componentFactory -> 
+        createFrom("./" + interfaceName.substr(0, interfaceName.find("Interface")));
+    delete componentFactory;
+    return (component -> getInstance());
+}
+
 class Application : public ApplicationInterface, public ComponentInterface
 {
     public:
@@ -30,27 +39,23 @@ class Application : public ApplicationInterface, public ComponentInterface
         bool implemented;
 };
 
-Application::Application() : referenceCounter(0){}
+Application::Application() : referenceCounter(0){
+    std::cout << "Application Created" << std::endl;
+}
 
-Application::~Application(){}
+Application::~Application(){
+    std::cout << "Application Deleted" << std::endl;
+}
 
 int Application::run()
 {
-    ComponentFactory* componentFactoryObject = new ComponentFactory();
-
-    componentFactoryObject->setInterfaceName("MessengerInterface");
-    ComponentInterface* messengerComponent = componentFactoryObject->createFrom("./Messenger");
-    MessengerInterface* messengerObject = ( (MessengerInterface*) messengerComponent->getInstance() );
-
-    componentFactoryObject->setInterfaceName("GreeterInterface");
-    ComponentInterface* greeterComponent = componentFactoryObject->createFrom("./Greeter");
-    GreeterInterface* greeterObject = ( (GreeterInterface*) greeterComponent->getInstance() );
+    MessengerInterface* messengerObject = ((MessengerInterface*) createComponent("MessengerInterface"));    
+    GreeterInterface* greeterObject = ((GreeterInterface*) createComponent("GreeterInterface"));
 
     greeterObject->greet(messengerObject->say());
-    greeterComponent->release();
-    messengerComponent->release();
 
-    delete componentFactoryObject;
+    ((ComponentInterface*) greeterObject) -> release();
+    ((ComponentInterface*) messengerObject) -> release();
 
     return 0;
 }

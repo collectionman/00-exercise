@@ -8,7 +8,7 @@ class Messenger : public MessengerInterface, public ComponentInterface
     public:
         Messenger();
         virtual ~Messenger();
-        std::string say( void );
+        std::string say(void);
 
         //ComponentInterface:
         bool implements(std::string interfaceName);
@@ -20,11 +20,15 @@ class Messenger : public MessengerInterface, public ComponentInterface
         bool implemented;
 };
 
-Messenger::Messenger() : referenceCounter(0){}
+Messenger::Messenger() : referenceCounter(0){
+    std::cout << "Messenger Created" << std::endl;
+}
 
-Messenger::~Messenger(){}
+Messenger::~Messenger(){
+    std::cout << "Messenger Deleted" << std::endl;
+}
 
-std::string Messenger::say( void )
+std::string Messenger::say(void)
 {
     return "I can be more than just a message on the console" ;
 }
